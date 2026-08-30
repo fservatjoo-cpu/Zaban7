@@ -237,7 +237,7 @@
       { expression: "Walk through", definition: "Guide someone step-by-step through a process or code.", example: "Let me walk you through the new user authentication flow." },
       { expression: "Wind up", definition: "End up in a specific situation, or finish a process.", example: "If we don't fix the memory leak, we'll wind up crashing the server." },
       { expression: "Write off", definition: "Dismiss something as a failure or loss.", example: "Don't write off that approach until we've tested performance." },
-      { expression: "Wear out", definition: "Become exhausted or unusable through heavy use.", example: "Running unoptimized scripts continuous will wear out your resources." },
+      { expression: "Wear out", definition: "Become exhausted or unusable through heavy use.", example: "Running unoptimized scripts continuously will wear out your resources." },
       { expression: "Wipe out", definition: "Completely destroy, erase, or eliminate.", example: "The database script accidentally wiped out the temporary tables." },
       { expression: "Wait up", definition: "Stay awake waiting for someone or something.", example: "Don't wait up for the batch deployment; it will run overnight." },
       { expression: "Watch out (for)", definition: "Be cautious, alert, or careful of potential danger/errors.", example: "Watch out for unhandled edge cases in user inputs." },
@@ -277,13 +277,12 @@
       { expression: "Zero-sum game", definition: "A situation where one party's gain is exactly equal to another's loss.", example: "Allocating server resources isn't a zero-sum game if we scale dynamically." }
     ];
 
-    // Load from local storage or fallback to preloaded initial dataset
-    let expressions = JSON.parse(localStorage.getItem('idiomsDataAlphabetical'));
+    // UPDATED: Changed storage key to 'idiomsDataV2' to flush old cached browser memory
+    let expressions = JSON.parse(localStorage.getItem('idiomsDataV2'));
     
-    // Merge dataset on initial launch or update
     if (!expressions || expressions.length < initialDataset.length) {
       expressions = initialDataset;
-      localStorage.setItem('idiomsDataAlphabetical', JSON.stringify(expressions));
+      localStorage.setItem('idiomsDataV2', JSON.stringify(expressions));
     }
 
     let selectedLetter = 'A';
@@ -535,7 +534,7 @@
             }
           });
 
-          localStorage.setItem('idiomsDataAlphabetical', JSON.stringify(expressions));
+          localStorage.setItem('idiomsDataV2', JSON.stringify(expressions));
           
           const firstLetter = parsed[0]?.expression?.trim().charAt(0).toUpperCase();
           const targetLetter = (firstLetter && /^[A-Z]$/.test(firstLetter)) ? firstLetter : (selectedLetter || 'A');
