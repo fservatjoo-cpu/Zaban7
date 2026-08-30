@@ -6,7 +6,7 @@
   <title>IdiomFlow - Dark Theme Expression Hub</title>
   <style>
     :root {
-      /* Dark Theme Defaults (Eye-Friendly) */
+      /* Dark Theme Defaults */
       --bg-color: #0f172a;
       --card-bg: #1e293b;
       --primary: #818cf8;
@@ -225,14 +225,67 @@
 
   <script>
     const initialDataset = [
+      // LETTER A
       { expression: "As far as I'm concerned", definition: "Used to give your personal opinion.", example: "As far as I'm concerned, Friday night pizza is a non-negotiable routine." },
       { expression: "At the end of the day", definition: "Used to introduce the ultimate conclusion or bottom line.", example: "We tried three different approaches, but at the end of the day, simplicity won." },
       { expression: "Ahead of the curve", definition: "Being more advanced, prepared, or innovative than average.", example: "She started learning web frameworks early, so she was way ahead of the curve." },
       { expression: "As a matter of fact", definition: "Used to emphasize a truth or add surprising details.", example: "I'm not tired at all. As a matter of fact, I feel like going for a run." },
-      { expression: "All in all", definition: "Taking everything into account for a final summary.", example: "It rained a bit on our vacation, but all in all, we had a fantastic time." }
+      { expression: "All in all", definition: "Taking everything into account for a final summary.", example: "It rained a bit on our vacation, but all in all, we had a fantastic time." },
+
+      // LETTER W
+      { expression: "Work out", definition: "Solve a problem, calculate, or develop successfully.", example: "We need to work out the performance bugs before the release." },
+      { expression: "Walk through", definition: "Guide someone step-by-step through a process or code.", example: "Let me walk you through the new user authentication flow." },
+      { expression: "Wind up", definition: "End up in a specific situation, or finish a process.", example: "If we don't fix the memory leak, we'll wind up crashing the server." },
+      { expression: "Write off", definition: "Dismiss something as a failure or loss.", example: "Don't write off that approach until we've tested performance." },
+      { expression: "Wear out", definition: "Become exhausted or unusable through heavy use.", example: "Running unoptimized scripts continuous will wear out your resources." },
+      { expression: "Wipe out", definition: "Completely destroy, erase, or eliminate.", example: "The database script accidentally wiped out the temporary tables." },
+      { expression: "Wait up", definition: "Stay awake waiting for someone or something.", example: "Don't wait up for the batch deployment; it will run overnight." },
+      { expression: "Watch out (for)", definition: "Be cautious, alert, or careful of potential danger/errors.", example: "Watch out for unhandled edge cases in user inputs." },
+      { expression: "Water down", definition: "Dilute or weaken the force, quality, or detail of something.", example: "Scaling back the feature set will water down the initial product vision." },
+      { expression: "Wrap up", definition: "Finish or conclude an activity or project.", example: "Let's wrap up this code review so we can deploy before lunch." },
+      { expression: "Walk away from", definition: "Abandon a situation, project, or agreement.", example: "It was hard to walk away from months of custom dev work, but necessary." },
+      { expression: "Weigh in (on)", definition: "Offer an opinion or advice in a discussion.", example: "I asked the principal engineer to weigh in on our database architecture." },
+      { expression: "Win-win situation", definition: "An outcome that benefits all parties involved.", example: "Automating tests is a win-win situation for both developers and QA." },
+      { expression: "Work around", definition: "Find a temporary bypass or solution to an obstacle.", example: "We managed to work around the third-party API limit using a local cache." },
+      { expression: "Word of mouth", definition: "Information passed informally from person to person.", example: "The new application gained its first hundred users entirely by word of mouth." },
+      { expression: "Wet behind the ears", definition: "Inexperienced, naive, or new to a role.", example: "He's still a bit wet behind the ears when it comes to server deployment." },
+      { expression: "What it takes", definition: "The necessary qualities, skills, or resources to succeed.", example: "She has what it takes to manage complex full-stack web projects." },
+      { expression: "Whistle in the dark", definition: "Try to remain optimistic despite obvious danger or trouble.", example: "Ignoring security alerts is just whistling in the dark." },
+      { expression: "Worth your while", definition: "Worth the time, effort, or expense invested.", example: "Investing time in clear documentation is always worth your while." },
+      { expression: "Weather the storm", definition: "Endure or survive a difficult situation or period.", example: "The engineering team managed to weather the storm during the traffic spike." },
+
+      // LETTERS X, Y, Z
+      { expression: "X-out", definition: "Cross out, mark with an X, or delete.", example: "X-out the invalid entries from the configuration list." },
+      { expression: "Xerox off", definition: "Make a quick photocopy of a document.", example: "Could you Xerox off a copy of the API spec before the meeting?" },
+      { expression: "Yearn for", definition: "Have an intense feeling of longing for something.", example: "After weeks of debugging legacy code, I yearn for a clean codebase." },
+      { expression: "Yield to", definition: "Give way, surrender, or defer to someone or something.", example: "We had to yield to the client's request for a tighter launch window." },
+      { expression: "Yank out", definition: "Pull or remove something abruptly or forcefully.", example: "The admin had to yank out the compromised server node immediately." },
+      { expression: "Yellow-bellied", definition: "Cowardly or lacking courage.", example: "Canceling the launch over a minor UI warning felt a bit yellow-bellied." },
+      { expression: "Yield up", definition: "Hand over, relinquish, or reveal something hidden.", example: "The crash dump finally yielded up the exact cause of the memory leak." },
+      { expression: "Yoke together", definition: "Join, couple, or bind two distinct things tightly.", example: "We shouldn't yoke together UI components with backend logic." },
+      { expression: "Yak away", definition: "Talk continuously and casually about trivial matters.", example: "They spent an hour yakking away about tech stack preferences." },
+      { expression: "Zero in on", definition: "Direct all attention or aim precisely at a target or problem.", example: "The profiler helped us zero in on the slow database query." },
+      { expression: "Zip through", definition: "Complete or move through a task very quickly.", example: "With the new build script running, we can zip through deployments." },
+      { expression: "Zip up", definition: "Close or secure with a zipper, or archive/compress files.", example: "Zip up the project logs and attach them to the support ticket." },
+      { expression: "Zip your lip", definition: "Keep quiet or stop talking completely.", example: "Keep your lip zipped about the unreleased dashboard features." },
+      { expression: "Zero out", definition: "Reset a value, balance, or counter to zero.", example: "At the end of the monthly accounting cycle, we zero out temporary balances." },
+      { expression: "Zonk out", definition: "Fall fast asleep quickly due to severe exhaustion.", example: "He zonked out right after finishing the overnight data migration." },
+      { expression: "Zone out", definition: "Lose concentration, space out, or stop paying attention.", example: "It's easy to zone out during a repetitive manual testing session." },
+      { expression: "Zone in", definition: "Focus intensely on a specific task or problem.", example: "Put on headphones and zone in on writing the core business logic." },
+      { expression: "Zigzag through", definition: "Navigate a complex path by making sharp back-and-forth turns.", example: "You have to zigzag through corporate approvals to change dependencies." },
+      { expression: "Zeal for", definition: "Great energy, enthusiasm, or passion for a cause or objective.", example: "Her zeal for clean user interface design elevated the whole app." },
+      { expression: "Zero-sum game", definition: "A situation where one party's gain is exactly equal to another's loss.", example: "Allocating server resources isn't a zero-sum game if we scale dynamically." }
     ];
 
-    let expressions = JSON.parse(localStorage.getItem('idiomsDataAlphabetical')) || initialDataset;
+    // Load from local storage or fallback to preloaded initial dataset
+    let expressions = JSON.parse(localStorage.getItem('idiomsDataAlphabetical'));
+    
+    // Merge dataset on initial launch or update
+    if (!expressions || expressions.length < initialDataset.length) {
+      expressions = initialDataset;
+      localStorage.setItem('idiomsDataAlphabetical', JSON.stringify(expressions));
+    }
+
     let selectedLetter = 'A';
     let filteredExpressions = [];
     let currentIndex = 0;
@@ -469,7 +522,6 @@
       try {
         const parsed = JSON.parse(rawInput);
         if (Array.isArray(parsed)) {
-          // Prevent duplicates by checking expression name (case-insensitive)
           parsed.forEach(newItem => {
             if (!newItem.expression) return;
             const existingIndex = expressions.findIndex(
@@ -477,15 +529,14 @@
             );
 
             if (existingIndex !== -1) {
-              expressions[existingIndex] = newItem; // Update existing entry
+              expressions[existingIndex] = newItem;
             } else {
-              expressions.push(newItem); // Add new entry
+              expressions.push(newItem);
             }
           });
 
           localStorage.setItem('idiomsDataAlphabetical', JSON.stringify(expressions));
           
-          // Detect imported letter to focus on it automatically
           const firstLetter = parsed[0]?.expression?.trim().charAt(0).toUpperCase();
           const targetLetter = (firstLetter && /^[A-Z]$/.test(firstLetter)) ? firstLetter : (selectedLetter || 'A');
 
