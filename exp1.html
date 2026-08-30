@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IdiomFlow - Dark Theme Expression Hub</title>
+  <style>
+    :root {
+      /* Dark Theme Defaults (Eye-Friendly) */
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --primary: #818cf8;
+      --primary-hover: #6366f1;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --example-bg: #0f172a;
+      --input-bg: #0f172a;
+    }
+
+    [data-theme="light"] {
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border-color: #e5e7eb;
+      --example-bg: #f9fafb;
+      --input-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 120px; transition: background-color 0.3s, color 0.3s; }
+
+    header {
+      background: var(--card-bg);
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 { font-size: 1.25rem; color: var(--primary); }
+    
+    .header-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+    .btn {
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn:hover { background-color: var(--primary-hover); }
+    .btn-secondary { background-color: #475569; color: #f8fafc; }
+    .btn-secondary:hover { background-color: #334155; }
+
+    .container { max-width: 900px; margin: 1.5rem auto; padding: 0 1rem; }
+
+    /* Search Control Bar */
+    .search-box {
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      background-color: var(--input-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      outline: none;
+    }
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Alphabet Filter Grid */
+    .letter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+      gap: 0.5rem;
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+    .letter-box {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      background: var(--input-bg);
+      color: var(--text-main);
+      position: relative;
+      transition: all 0.2s;
+    }
+    .letter-box:hover { border-color: var(--primary); color: var(--primary); }
+    .letter-box.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+    .letter-box .count { font-size: 0.65rem; font-weight: normal; opacity: 0.8; }
+    .letter-box.empty { opacity: 0.3; }
+
+    /* Cards Layout */
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border: 2px solid var(--border-color);
+      transition: border-color 0.2s;
+    }
+    .card.active { border-color: var(--primary); }
+    .card-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .card-title { font-size: 1.35rem; color: var(--primary); margin-bottom: 0.4rem; }
+    .card-definition { font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.75rem; font-style: italic; }
+    .card-example { background: var(--example-bg); padding: 0.6rem 0.8rem; border-left: 4px solid var(--primary); border-radius: 4px; font-size: 0.9rem; color: var(--text-main); }
+
+    /* Bottom Player Dock */
+    .player-dock {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .player-controls { display: flex; align-items: center; gap: 1rem; }
+    .player-controls button { width: 40px; height: 40px; border-radius: 50%; font-size: 1rem; display: grid; place-items: center; }
+    .player-controls .play-btn { width: 48px; height: 48px; font-size: 1.2rem; }
+    .player-settings { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+    .player-settings select { padding: 0.2rem 0.4rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 100;
+      place-items: center;
+    }
+    .modal.open { display: grid; }
+    .modal-content { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; width: 90%; max-width: 600px; border: 1px solid var(--border-color); }
+    textarea { width: 100%; height: 180px; margin: 1rem 0; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; font-family: monospace; background: var(--input-bg); color: var(--text-main); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>IdiomFlow (Dark Mode)</h1>
+    <div class="header-actions">
+      <button class="btn btn-secondary" onclick="toggleTheme()" id="theme-btn">&#9790; Light Mode</button>
+      <button class="btn" onclick="toggleModal(true)">+ Add JSON Expressions</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Search by letter, word, or sentence..." oninput="handleSearchInput()">
+      <button class="btn btn-secondary" onclick="clearSearch()">Clear</button>
+    </div>
+
+    <div class="letter-grid" id="letter-grid"></div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h2 id="section-title">Letter A</h2>
+      <button class="btn btn-secondary" style="font-size: 0.8rem;" onclick="filterLetter('ALL')">Show All</button>
+    </div>
+
+    <div id="expression-deck"></div>
+  </main>
+
+  <div class="player-dock">
+    <div class="player-controls">
+      <button class="btn btn-secondary" onclick="previousTrack()">&#9198;</button>
+      <button class="btn play-btn" id="play-pause-btn" onclick="togglePlay()">&#9654;</button>
+      <button class="btn btn-secondary" onclick="nextTrack()">&#9197;</button>
+    </div>
+    <div class="player-settings">
+      <label for="voice-select">Voice:</label>
+      <select id="voice-select" onchange="changeVoice()"></select>
+      <span style="margin: 0 0.25rem;">|</span>
+      <label for="speed">Speed:</label>
+      <select id="speed" onchange="updateSpeed(this.value)">
+        <option value="0.8">0.8x</option>
+        <option value="1" selected>1.0x</option>
+        <option value="1.2">1.2x</option>
+      </select>
+      <span style="margin: 0 0.25rem;">|</span>
+      <span id="playing-status">Paused</span>
+    </div>
+  </div>
+
+  <div class="modal" id="import-modal">
+    <div class="modal-content">
+      <h2>Import JSON Expressions</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.25rem;">
+        Paste an array of JSON objects with keys: <code>expression</code>, <code>definition</code>, and <code>example</code>.
+      </p>
+      <textarea id="json-input" placeholder='[&#10;  {&#10;    "expression": "Break a leg",&#10;    "definition": "Good luck.",&#10;    "example": "Break a leg at your performance tonight!"&#10;  }&#10;]'></textarea>
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+        <button class="btn btn-secondary" onclick="toggleModal(false)">Cancel</button>
+        <button class="btn" onclick="importJSON()">Import Data</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const initialDataset = [
+      { expression: "As far as I'm concerned", definition: "Used to give your personal opinion.", example: "As far as I'm concerned, Friday night pizza is a non-negotiable routine." },
+      { expression: "At the end of the day", definition: "Used to introduce the ultimate conclusion or bottom line.", example: "We tried three different approaches, but at the end of the day, simplicity won." },
+      { expression: "Ahead of the curve", definition: "Being more advanced, prepared, or innovative than average.", example: "She started learning web frameworks early, so she was way ahead of the curve." },
+      { expression: "As a matter of fact", definition: "Used to emphasize a truth or add surprising details.", example: "I'm not tired at all. As a matter of fact, I feel like going for a run." },
+      { expression: "All in all", definition: "Taking everything into account for a final summary.", example: "It rained a bit on our vacation, but all in all, we had a fantastic time." }
+    ];
+
+    let expressions = JSON.parse(localStorage.getItem('idiomsDataAlphabetical')) || initialDataset;
+    let selectedLetter = 'A';
+    let filteredExpressions = [];
+    let currentIndex = 0;
+    let isPlaying = false;
+    let playbackSpeed = 1.0;
+    let selectedVoice = null;
+    let voices = [];
+    const synth = window.speechSynthesis;
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeBtn(savedTheme);
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeBtn(newTheme);
+    }
+
+    function updateThemeBtn(theme) {
+      const btn = document.getElementById('theme-btn');
+      btn.innerHTML = theme === 'dark' ? '&#9788; Light Mode' : '&#9790; Dark Mode';
+    }
+
+    function loadVoices() {
+      voices = synth.getVoices();
+      const voiceSelect = document.getElementById('voice-select');
+      voiceSelect.innerHTML = '';
+
+      let preferredVoice = voices.find(v => (v.name.includes("Ava") || v.name.includes("Samantha") || v.name.includes("Zira") || v.name.includes("Victoria") || v.name.includes("Female")) && (v.lang === "en-US" || v.lang.startsWith("en")));
+      
+      if (!preferredVoice) {
+        preferredVoice = voices.find(v => v.lang === "en-US") || voices[0];
+      }
+      
+      selectedVoice = preferredVoice;
+
+      voices.forEach((voice, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        if (voice === selectedVoice) option.selected = true;
+        voiceSelect.appendChild(option);
+      });
+    }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function changeVoice() {
+      const idx = document.getElementById('voice-select').value;
+      selectedVoice = voices[idx];
+      if (isPlaying) speakCurrent();
+    }
+
+    function renderLetterGrid() {
+      const grid = document.getElementById('letter-grid');
+      grid.innerHTML = '';
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+      alphabet.forEach(letter => {
+        const count = expressions.filter(e => e.expression.trim().toUpperCase().startsWith(letter)).length;
+        const box = document.createElement('div');
+        box.className = `letter-box ${selectedLetter === letter ? 'active' : ''} ${count === 0 ? 'empty' : ''}`;
+        box.onclick = () => {
+          document.getElementById('search-input').value = '';
+          filterLetter(letter);
+        };
+        box.innerHTML = `${letter}<span class="count">${count}</span>`;
+        grid.appendChild(box);
+      });
+    }
+
+    function filterLetter(letter) {
+      selectedLetter = letter;
+      renderLetterGrid();
+
+      if (letter === 'ALL') {
+        filteredExpressions = [...expressions].sort((a,b) => a.expression.localeCompare(b.expression));
+        document.getElementById('section-title').innerText = "All Expressions";
+      } else {
+        filteredExpressions = expressions
+          .filter(e => e.expression.trim().toUpperCase().startsWith(letter))
+          .sort((a,b) => a.expression.localeCompare(b.expression));
+        document.getElementById('section-title').innerText = `Letter ${letter}`;
+      }
+
+      currentIndex = 0;
+      renderCards();
+      if (isPlaying) speakCurrent();
+    }
+
+    function handleSearchInput() {
+      const query = document.getElementById('search-input').value.trim().toLowerCase();
+      selectedLetter = '';
+      renderLetterGrid();
+
+      if (query === '') {
+        filterLetter('A');
+        return;
+      }
+
+      filteredExpressions = expressions.filter(e => 
+        e.expression.toLowerCase().includes(query) ||
+        e.definition.toLowerCase().includes(query) ||
+        e.example.toLowerCase().includes(query)
+      ).sort((a,b) => a.expression.localeCompare(b.expression));
+
+      document.getElementById('section-title').innerText = `Search Results for "${query}"`;
+      currentIndex = 0;
+      renderCards();
+      if (isPlaying) speakCurrent();
+    }
+
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      filterLetter('A');
+    }
+
+    function renderCards() {
+      const deck = document.getElementById('expression-deck');
+      deck.innerHTML = '';
+
+      if (filteredExpressions.length === 0) {
+        deck.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:3rem 0;">No matching expressions found.</div>`;
+        return;
+      }
+
+      filteredExpressions.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = `card ${index === currentIndex ? 'active' : ''}`;
+        card.id = `card-${index}`;
+        card.innerHTML = `
+          <div class="card-meta"><span>Item ${index + 1} of ${filteredExpressions.length}</span></div>
+          <div class="card-title">${item.expression}</div>
+          <div class="card-definition">${item.definition}</div>
+          <div class="card-example">"${item.example}"</div>
+        `;
+        deck.appendChild(card);
+      });
+    }
+
+    function speakCurrent() {
+      if (!isPlaying || filteredExpressions.length === 0) return;
+
+      synth.cancel();
+      updateActiveCardUI();
+
+      const item = filteredExpressions[currentIndex];
+      
+      const utterExpression = new SpeechSynthesisUtterance(item.expression);
+      const utterDefinition = new SpeechSynthesisUtterance(`Meaning: ${item.definition}`);
+      const utterExample = new SpeechSynthesisUtterance(`Example: ${item.example}`);
+
+      [utterExpression, utterDefinition, utterExample].forEach(u => {
+        if (selectedVoice) u.voice = selectedVoice;
+        u.rate = playbackSpeed;
+      });
+
+      utterExpression.onend = () => {
+        if (isPlaying) setTimeout(() => synth.speak(utterDefinition), 400);
+      };
+
+      utterDefinition.onend = () => {
+        if (isPlaying) setTimeout(() => synth.speak(utterExample), 400);
+      };
+
+      utterExample.onend = () => {
+        if (isPlaying) {
+          currentIndex = (currentIndex + 1) % filteredExpressions.length;
+          setTimeout(speakCurrent, 1200);
+        }
+      };
+
+      synth.speak(utterExpression);
+    }
+
+    function togglePlay() {
+      if (filteredExpressions.length === 0) return;
+      isPlaying = !isPlaying;
+      const btn = document.getElementById('play-pause-btn');
+      const status = document.getElementById('playing-status');
+      
+      if (isPlaying) {
+        btn.innerHTML = '&#10074;&#10074;';
+        status.innerText = 'Playing...';
+        speakCurrent();
+      } else {
+        btn.innerHTML = '&#9654;';
+        status.innerText = 'Paused';
+        synth.cancel();
+      }
+    }
+
+    function nextTrack() {
+      if (filteredExpressions.length === 0) return;
+      currentIndex = (currentIndex + 1) % filteredExpressions.length;
+      updateActiveCardUI();
+      if (isPlaying) speakCurrent();
+    }
+
+    function previousTrack() {
+      if (filteredExpressions.length === 0) return;
+      currentIndex = (currentIndex - 1 + filteredExpressions.length) % filteredExpressions.length;
+      updateActiveCardUI();
+      if (isPlaying) speakCurrent();
+    }
+
+    function updateSpeed(val) {
+      playbackSpeed = parseFloat(val);
+      if (isPlaying) speakCurrent();
+    }
+
+    function updateActiveCardUI() {
+      document.querySelectorAll('.card').forEach((el, idx) => {
+        el.classList.toggle('active', idx === currentIndex);
+      });
+      const activeCard = document.getElementById(`card-${currentIndex}`);
+      if (activeCard) activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function toggleModal(show) {
+      document.getElementById('import-modal').classList.toggle('open', show);
+    }
+
+    function importJSON() {
+      const rawInput = document.getElementById('json-input').value;
+      try {
+        const parsed = JSON.parse(rawInput);
+        if (Array.isArray(parsed)) {
+          // Prevent duplicates by checking expression name (case-insensitive)
+          parsed.forEach(newItem => {
+            if (!newItem.expression) return;
+            const existingIndex = expressions.findIndex(
+              item => item.expression.trim().toLowerCase() === newItem.expression.trim().toLowerCase()
+            );
+
+            if (existingIndex !== -1) {
+              expressions[existingIndex] = newItem; // Update existing entry
+            } else {
+              expressions.push(newItem); // Add new entry
+            }
+          });
+
+          localStorage.setItem('idiomsDataAlphabetical', JSON.stringify(expressions));
+          
+          // Detect imported letter to focus on it automatically
+          const firstLetter = parsed[0]?.expression?.trim().charAt(0).toUpperCase();
+          const targetLetter = (firstLetter && /^[A-Z]$/.test(firstLetter)) ? firstLetter : (selectedLetter || 'A');
+
+          filterLetter(targetLetter);
+          toggleModal(false);
+          document.getElementById('json-input').value = '';
+          alert(`Successfully imported/updated ${parsed.length} expressions!`);
+        } else {
+          alert("Input must be a valid JSON array.");
+        }
+      } catch (e) {
+        alert("Invalid JSON format. Please verify your structure.");
+      }
+    }
+
+    // Initial Load
+    initTheme();
+    loadVoices();
+    filterLetter('A');
+  </script>
+</body>
+</html>
